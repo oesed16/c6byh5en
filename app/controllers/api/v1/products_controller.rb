@@ -1,15 +1,17 @@
 class Api::V1::ProductsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  protect_from_forgery with: :null_session
+  # skip_before_action :verify_authenticity_token (Otra forma)
+ 
   def index
     render json: Product.all
   end
 
   def create
-    @product = Product.new(product_params)
-    if @product.save
-      render json: @product, status: :created  
+    product = Product.new(product_params)
+    if product.save
+      render json: product, status: 201
     else
-      render json: @product.errors, status: :unprocessable_entity  
+      render json: { errors: product.errors }, status: 422
     end
   end
   
