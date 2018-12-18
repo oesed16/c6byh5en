@@ -1,9 +1,7 @@
 class Api::V1::ProductsController < ApplicationController
   def index
     @products = Product.all
-    respond_to do |format|
-      format.any { render json: @products }
-    end
+    render json: @products, :formats => [:json]
   end
 
   def new
